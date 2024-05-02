@@ -6,8 +6,15 @@
     <description>Recent content on Andy Cliftons Blog</description>
     <generator>Hugo 0.125.0</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 08 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 May 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="/en/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Verklein OS Disk Size in Azure</title>
+      <link>/en/blog/shrink-os-disk-size-in-azure/</link>
+      <pubDate>Thu, 02 May 2024 00:00:00 +0000</pubDate>
+      <guid>/en/blog/shrink-os-disk-size-in-azure/</guid>
+      <description>Password Protection ==&amp;gt; Disclaimer work in progress &amp;lt;== Voorwoord Complexe wachtwoorden zijn basis requirements om je systeem te beschermen tegen een cyberaanval. Zelfs vandaag de dag kunnen de meeste cyber-attacks voorkomen worden als users een meer complex en vooral niet te raden wachtwoord zouden gebruiken. Cyber-attackers proberen altijd eerst het low hanging fruit. Dus met een password protection policy kun je het ze in ieder geval al een stuk moeilijker maken.</description>
+    </item>
     <item>
       <title>Inplace Upgrade een Server van 2019 naar 2022</title>
       <link>/en/blog/upgrade-a-server-from-2019-to-2022/</link>

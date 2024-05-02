@@ -1,10 +1,10 @@
 ---
 Author: "Andy Clifton"
-title: "Password Protection"
-description: "Password Protection"
-date: 2023-04-18
+title: "Verklein OS Disk Size in Azure"
+description: "Verklein OS Disk Size in Azur"
+date: 2024-05-02
 tags: ["emoji"]
-thumbnail: "/img/hugo.jpg"
+thumbnail: "/img/Resize.png"
 ---
 
 # Password Protection

@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Andy Cliftons Blog</title>
-    <link>//localhost:1313/en/</link>
+    <link>/en/</link>
     <description>Recent content on Andy Cliftons Blog</description>
     <generator>Hugo 0.125.0</generator>
     <language>en</language>
     <lastBuildDate>Fri, 08 Mar 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/en/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/en/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Inplace Upgrade een Server van 2019 naar 2022</title>
-      <link>//localhost:1313/en/blog/upgrade-a-server-from-2019-to-2022/</link>
+      <link>/en/blog/upgrade-a-server-from-2019-to-2022/</link>
       <pubDate>Fri, 08 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/blog/upgrade-a-server-from-2019-to-2022/</guid>
+      <guid>/en/blog/upgrade-a-server-from-2019-to-2022/</guid>
       <description>Voorwoord De vraag die ik regelmatig krijg is: Hoe kan ik een Windows Server upgraden naar de nieuwste versie van Windows nu ik geen iso kan mounten? Microsoft heeft hier over nagedacht en heeft de mogelijkheid gecreëerd om een inplace upgrade uit te voeren op de machine zelf. Hieronder leg ik verder uit hoe je deze stappen het beste kunt doen.&#xA;Creëer een Managed Disk met de Iso hierin. Het crëeren van deze disk kan alleen via Powershell.</description>
     </item>
     <item>
       <title>Eenmalige toegangscode voor Azure AD B2B-Guest Users</title>
-      <link>//localhost:1313/en/blog/eenmalige-authenticatie-voor-guest-users/</link>
+      <link>/en/blog/eenmalige-authenticatie-voor-guest-users/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/blog/eenmalige-authenticatie-voor-guest-users/</guid>
+      <guid>/en/blog/eenmalige-authenticatie-voor-guest-users/</guid>
       <description>Eenmalige toegangscode voor Azure AD B2B-Guest Users ==&amp;gt; Disclaimer work in progress &amp;lt;== Voorwoord AzureAD B2B staat externe gebruikers toe om toepassingen, services en gegevens van de Tenant te gebruiken. Om gasten toegang toe te staan moeten ze een AzureAD account, Microsoft account of een Google Federation hebben. (Voor @gmail.com en @googlemail.com gebruikers). Mocht een user nu geen van deze accounts hebben dan kan er toch connectie gemaakt worden met een eenmalige toegangscode.</description>
     </item>
     <item>
       <title>Configure Azure ARC in een test omgeving</title>
-      <link>//localhost:1313/en/blog/configure-azure-arc-in-een-test-omgeving/</link>
+      <link>/en/blog/configure-azure-arc-in-een-test-omgeving/</link>
       <pubDate>Wed, 03 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/blog/configure-azure-arc-in-een-test-omgeving/</guid>
+      <guid>/en/blog/configure-azure-arc-in-een-test-omgeving/</guid>
       <description>Configure Azure ARC in een test omgeving ==&amp;gt; Disclaimer work in progress. &amp;lt;== Voorwoord Soms is het handig om even snel een testomgeving op te zetten, zodat je dingen kunt testen. Echter is het niet altijd mogelijk om een hele Hyper-V omgeving op te tuigen. Hoe ga je dat snel doen? Wat heb je daar voor nodig? En kan dit in Azure? Meerdere vragen die ik nog wel eens gesteld krijg.</description>
     </item>
     <item>
       <title>Run Powershell Script met Hybrid Worker Groups</title>
-      <link>//localhost:1313/en/blog/run-powershell-script-with-hybrid-worker/</link>
+      <link>/en/blog/run-powershell-script-with-hybrid-worker/</link>
       <pubDate>Sat, 12 Aug 2023 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/blog/run-powershell-script-with-hybrid-worker/</guid>
+      <guid>/en/blog/run-powershell-script-with-hybrid-worker/</guid>
       <description>Run Powershell Script met Hybrid Worker Groups ==&amp;gt; Disclaimer work in progress. &amp;lt;== Voorwoord Als je de on-premises omgeving wilt automatiseren, is Azure Arc Server een geweldige aanbieding voor het onboarden van Azure-beheerservices zoals Azure Monitor, Sentinel, maar ook Defender en IAM. Een van de andere voordelen die we nog hebben is het gebruik van Hybrid Workers. Hierdoor kun je Runbooks, Logic Apps of Power Automate gebruiken om het beheer of deploy van dingen op je on-premise vm mogelijk te maken.</description>
     </item>
     <item>
       <title>Password Protection</title>
-      <link>//localhost:1313/en/blog/passwordprotection/</link>
+      <link>/en/blog/passwordprotection/</link>
       <pubDate>Tue, 18 Apr 2023 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/blog/passwordprotection/</guid>
+      <guid>/en/blog/passwordprotection/</guid>
       <description>Password Protection ==&amp;gt; Disclaimer work in progress &amp;lt;== Voorwoord Complexe wachtwoorden zijn basis requirements om je systeem te beschermen tegen een cyberaanval. Zelfs vandaag de dag kunnen de meeste cyber-attacks voorkomen worden als users een meer complex en vooral niet te raden wachtwoord zouden gebruiken. Cyber-attackers proberen altijd eerst het low hanging fruit. Dus met een password protection policy kun je het ze in ieder geval al een stuk moeilijker maken.</description>
     </item>
     <item>
       <title>Disk Encryptie in Azure VMs</title>
-      <link>//localhost:1313/en/blog/disk-encryptie-in-azure-vms/</link>
+      <link>/en/blog/disk-encryptie-in-azure-vms/</link>
       <pubDate>Thu, 16 Feb 2023 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/blog/disk-encryptie-in-azure-vms/</guid>
+      <guid>/en/blog/disk-encryptie-in-azure-vms/</guid>
       <description>Disk Encryptie in Azure VMs ==&amp;gt; Disclaimer work in progress &amp;lt;== Voorwoord In het verleden vereiste het proces van het encrypten van een virtuele machine in Microsoft Azure een AD App account om het werk uit te kunnen voeren. Tegenwoordig hebben we een eenvoudigere manier om onze VM’s in Microsoft Azure te encrypten en deze nieuwe methode is geïntegreerd in de Azure Portal. In dit artikel gaan we de basisprincipes behandelen om encryptie in te schakelen met behulp van de nieuwe methode, inclusief het maken van een Azure Key Vault.</description>
     </item>
     <item>
       <title>Disaster Recovery</title>
-      <link>//localhost:1313/en/blog/disaster-recovery/</link>
+      <link>/en/blog/disaster-recovery/</link>
       <pubDate>Mon, 16 Jan 2023 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/blog/disaster-recovery/</guid>
+      <guid>/en/blog/disaster-recovery/</guid>
       <description>Disaster Recovery ==&amp;gt; Disclaimer work in progress. &amp;lt;== Voorwoord Als je een virtuele machine hebt draaien in Azure en je wilt er voor zorgen dat je machines zoveel mogelijk beschermd zijn tegen downtime, dan zijn er meerdere dingen die je wilt bekijken in de termen van availability. Je moet zorgen dat je over de benodigde uptime beschikt in de regio waar de vm’s worden uitgevoerd. Hiervoor kun je denken aan verschillende storage opties zoals Premium Storage die voor 1 disk een SLA biedt van 99,9%.</description>
     </item>
     <item>
       <title>About Me</title>
-      <link>//localhost:1313/en/page/about/</link>
+      <link>/en/page/about/</link>
       <pubDate>Thu, 15 Jul 2021 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/en/page/about/</guid>
+      <guid>/en/page/about/</guid>
       <description></description>
     </item>
   </channel>

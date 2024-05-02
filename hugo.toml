@@ -110,8 +110,8 @@ DefaultContentLanguageInSubdir = true
     website = "github"
     url = "https://github.com/AndyClifton2"
   [[params.homepage.social.icons]]
-    website = "Detron IT Consultants"
-    url = "https://ditco.detron.nl/"
+    website = "RawWorks"
+    url = "https://www.rawworks.nl/"
       [[params.homepage.social.icons]]
     website = "youtube"
     url = "https://www.youtube.com/@AzureAdventurer"

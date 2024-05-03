@@ -7,24 +7,28 @@ tags: ["emoji"]
 thumbnail: "/img/Resize.png"
 ---
 
-# Password Protection
+# Verkleinen OS Disk Size in Azure
 
 ### ==> Disclaimer work in progress <==
 
 ## Voorwoord
 
-Complexe wachtwoorden zijn basis requirements om je systeem te beschermen tegen een cyberaanval.
-Zelfs vandaag de dag kunnen de meeste cyber-attacks voorkomen worden als users een meer complex en vooral niet te raden wachtwoord zouden gebruiken.
-Cyber-attackers proberen altijd eerst het low hanging fruit. Dus met een password protection policy kun je het ze in ieder geval al een stuk moeilijker maken.
-In een On-Premises omgeving kunnen we complexe wachtwoorden afdwingen via Group Policy’s, echter kunnen we met deze methode geen wachtwoord combinaties blokken. Dit kan wel via password protection.
-Azure AD support nu banned password list en smart lockout voor zowel Azure AD als ook on-premise AD in een hybrid omgeving. (Smart lockout gebruikt cloud intelligence om wachtwoord spoofing te detecteren).
+Een OS disk die te groot aangemaakt is, het blijft een lastig probleem. Het zijn onnodige kosten binnen azure. en het aanpassen van de Size van een Azure OS disk kan niet zomaar. Je krijgt dan de melding:
+![Image](/Images/ShrinkOS/ReduceSize.png)
 
-Laten we nu de setup van Azure AD password protection er eens bij pakken om de hybrid omgeving te beveiligen.
+Toch zijn er mogelijkheden om dit aan te passen en daardoor kosten te besparen. De eis om dit te kunnen doen is uiteraard dat er genoeg schijfruimte aanwezig op de Disk in de VM om dit kunnen doen.
+
+Dit probleem kom je zeer regelmatig tegen op het moment dat er vanuit een On-premise omgeving een server gemigreerd word. (grote OS disk voor groeien vast aangemaakt).
+Als er voldoende vrije disk ruimte aanwezig is om de schijf te brengen naar 64Gb of 32Gb is dit mogelijk.
+Hou wel rekening met de aanpassing van IOPS en Throughput op het moment dat disks kleiner gemaakt word.
+Hieronder de stappen om deze aanpassing te maken.
 
 
-## Setup Azure AD Password Protection
+## Kleiner maken van de disk in de VM.
 
-Log in op de Azure portal en klik op **Azure Active Directory**
+Log in op de server via RDP.
+
+
 
 ![Image](/Images/PasswordProtection/AAD.png)
 

@@ -230,6 +230,7 @@
       "inrichten-van-de-key-vault",
       "installeer-hyper-v-en-installeer-windows-2019-op-een-hyper-v-machine",
       "installeren-azure-agents-op-on-premise-servers",
+      "kleiner-maken-van-de-disk-in-de-vm",
       "maken-van-een-azure-automation-account",
       "password-protection",
       "run-en-schedule-powershell-script-als-azure-automation-runbook-via-hybrid-worker-group-op-een-azure-arc-machine",
@@ -237,6 +238,7 @@
       "schijven-en-encryptie-scenarios-beheren",
       "setup-azure-ad-password-protection",
       "setup-disaster-recovery-voor-azure-vms",
+      "verkleinen-os-disk-size-in-azure",
       "voorwoord"
     ]
   }

@@ -37,7 +37,7 @@
   <meta itemprop="description" content="Verklein OS Disk Size in Azur">
   <meta itemprop="datePublished" content="2024-05-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2024-05-02T00:00:00+00:00">
-  <meta itemprop="wordCount" content="594">
+  <meta itemprop="wordCount" content="603">
   <meta itemprop="keywords" content="Emoji">
 
   
@@ -156,7 +156,7 @@
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      594&nbsp;words
+      603&nbsp;words
       
         
       
@@ -177,7 +177,7 @@
 
         
         <li>
-        <a href="#password-protection">Password Protection</a>
+        <a href="#verkleinen-os-disk-size-in-azure">Verkleinen OS Disk Size in Azure</a>
         
 
         
@@ -195,7 +195,7 @@
 
         
         </li><li>
-        <a href="#setup-azure-ad-password-protection">Setup Azure AD Password Protection</a>
+        <a href="#kleiner-maken-van-de-disk-in-de-vm">Kleiner maken van de disk in de VM.</a>
         
 
         
@@ -205,17 +205,18 @@
     </li></ul>
   </details>
 
-    <h1 id="password-protection">Password Protection</h1>
+    <h1 id="verkleinen-os-disk-size-in-azure">Verkleinen OS Disk Size in Azure</h1>
 <h3 id="-disclaimer-work-in-progress-">==&gt; Disclaimer work in progress &lt;==</h3>
 <h2 id="voorwoord">Voorwoord</h2>
-<p>Complexe wachtwoorden zijn basis requirements om je systeem te beschermen tegen een cyberaanval.
-Zelfs vandaag de dag kunnen de meeste cyber-attacks voorkomen worden als users een meer complex en vooral niet te raden wachtwoord zouden gebruiken.
-Cyber-attackers proberen altijd eerst het low hanging fruit. Dus met een password protection policy kun je het ze in ieder geval al een stuk moeilijker maken.
-In een On-Premises omgeving kunnen we complexe wachtwoorden afdwingen via Group Policy’s, echter kunnen we met deze methode geen wachtwoord combinaties blokken. Dit kan wel via password protection.
-Azure AD support nu banned password list en smart lockout voor zowel Azure AD als ook on-premise AD in een hybrid omgeving. (Smart lockout gebruikt cloud intelligence om wachtwoord spoofing te detecteren).</p>
-<p>Laten we nu de setup van Azure AD password protection er eens bij pakken om de hybrid omgeving te beveiligen.</p>
-<h2 id="setup-azure-ad-password-protection">Setup Azure AD Password Protection</h2>
-<p>Log in op de Azure portal en klik op <strong>Azure Active Directory</strong></p>
+<p>Een OS disk die te groot aangemaakt is, het blijft een lastig probleem. Het zijn onnodige kosten binnen azure. en het aanpassen van de Size van een Azure OS disk kan niet zomaar. Je krijgt dan de melding:
+<img alt="Image" src="/Images/ShrinkOS/ReduceSize.png"></p>
+<p>Toch zijn er mogelijkheden om dit aan te passen en daardoor kosten te besparen. De eis om dit te kunnen doen is uiteraard dat er genoeg schijfruimte aanwezig op de Disk in de VM om dit kunnen doen.</p>
+<p>Dit probleem kom je zeer regelmatig tegen op het moment dat er vanuit een On-premise omgeving een server gemigreerd word. (grote OS disk voor groeien vast aangemaakt).
+Als er voldoende vrije disk ruimte aanwezig is om de schijf te brengen naar 64Gb of 32Gb is dit mogelijk.
+Hou wel rekening met de aanpassing van IOPS en Throughput op het moment dat disks kleiner gemaakt word.
+Hieronder de stappen om deze aanpassing te maken.</p>
+<h2 id="kleiner-maken-van-de-disk-in-de-vm">Kleiner maken van de disk in de VM.</h2>
+<p>Log in op de server via RDP.</p>
 <p><img alt="Image" src="/Images/PasswordProtection/AAD.png"></p>
 <p>Open <strong>Authentication methods</strong>
 .</p>

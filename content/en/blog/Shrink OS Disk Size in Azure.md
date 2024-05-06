@@ -30,7 +30,7 @@ Log in op de server via RDP.
 
 
 
-![Image](/Images/PasswordProtection/AAD.png)
+![Image](/Images/ShrinkOS/RDP.png)
 
 Open **Authentication methods**
 .

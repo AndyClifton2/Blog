@@ -37,7 +37,7 @@
   <meta itemprop="description" content="Verklein OS Disk Size in Azur">
   <meta itemprop="datePublished" content="2024-05-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2024-05-02T00:00:00+00:00">
-  <meta itemprop="wordCount" content="421">
+  <meta itemprop="wordCount" content="2151">
   <meta itemprop="keywords" content="Emoji">
 
   
@@ -146,7 +146,7 @@
         <circle cx="12" cy="12" r="9" />
         <polyline points="12 7 12 12 15 15" />
       </svg>
-      2&nbsp;minutes
+      11&nbsp;minutes
       &nbsp;&bull;
       <svg xmlns="http://www.w3.org/2000/svg" class="mx-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -156,7 +156,7 @@
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      421&nbsp;words
+      2151&nbsp;words
       
         
       
@@ -239,7 +239,352 @@ Ga naar de azure portal en zoek op Virtual Machines.</p>
 <p><img alt="Image" src="/Images/ShrinkOS/VirtualMachines.png"></p>
 <p>Zoek op de virtuele machine en klik op Stop.
 <img alt="Image" src="/Images/ShrinkOS/stop.png"></p>
+<p>Als de machine gestopt is zie je ook dat hij op deallocated staat.
+<img alt="Image" src="/Images/ShrinkOS/stopped.png"></p>
+<p>Nu gaan we vanuit uw machine zelf een Powershell ISE opstarten en runnen daar een script.
+Ik zal hier eerst stap voor stap de gedeeltes uit het script doorlopen. aan aan het einde zal ik het complete script nog eens copieren.</p>
+<p>Eerst installeren we de Azure modules</p>
+<pre tabindex="0"><code>Install-Module -name Az
+</code></pre><p><img alt="Image" src="/Images/ShrinkOS/Azmodule.jpg"></p>
+<p>Hierna gaan we de informatie verzamelen die we later nodig hebben in het script</p>
+<pre tabindex="0"><code># Variables
+$DiskID = &#34;# eg. &#34;/subscriptions/203bdbf0-69bd-1a12-a894-a826cf0a34c8/resourcegroups/rg-server1-prod-1/providers/Microsoft.Compute/disks/Server1-Server1&#34;
+$VMName = &#34;eg. Vmname&#34;
+$DiskSizeGB = 90 (eq. DiskSize)
+$AzSubscription = &#34;eq. Subscription name&#34;
+</code></pre><p>De DiskId kun je ophalen in de Disk van de VM en dan naar Properties te gaan.
+<img alt="Image" src="/Images/ShrinkOS/disktype.png"></p>
+<p>Hierna maken we connectie met Azure.</p>
+<pre tabindex="0"><code># Login to Azure with your Admin Account:
+Connect-AzAccount
+</code></pre><p><img alt="Image" src="/Images/ShrinkOS/login.png"></p>
+<p>Daarna krijg je een melding dat de authenticatie succesvol was. Sluit je browser en ga terug naar Powershell ISE.
+<img alt="Image" src="/Images/ShrinkOS/loginsuccess.png"></p>
+<p>Je ziet in ISE dan dat er een connectie gemaakt is.</p>
+<p><img alt="Image" src="/Images/ShrinkOS/loginise.png"></p>
+<p>Nu gaan we de subscription selecteren waar de VM onder draait. (deze stap is alleen noodzakelijk als je meerdere subscriptions hebt.)</p>
+<pre tabindex="0"><code>#Provide the subscription Id of the subscription where VM is created
+Select-AzSubscription -Subscription $AzSubscription
+</code></pre><p><img alt="Image" src="/Images/ShrinkOS/selectsubscription.png"></p>
+<p>Hierna gaan we alle info ophalen van de VM waar het om gaat.</p>
+<pre tabindex="0"><code># VM to resize disk of
+$VM = Get-AzVm | ? Name -eq $VMName
+</code></pre><p><img alt="Image" src="/Images/ShrinkOS/outputvm.png"></p>
+<p>Nu gaan we een aantal informatie uit de vm en zijn disk halen.</p>
+<pre tabindex="0"><code>#Provide the name of your resource group where VM is created
+$resourceGroupName = $VM.ResourceGroupName
 
+# Get Disk from ID
+$Disk = Get-AzDisk | ? Id -eq $DiskID
+
+# Get VM/Disk generation from Disk
+$HyperVGen = $Disk.HyperVGeneration
+
+# Get Disk Name from Disk
+$DiskName = $Disk.Name
+</code></pre><p>Output ziet er als volgt uit:</p>
+<p>Voor $disk:
+<img alt="Image" src="/Images/ShrinkOS/disk1.png"></p>
+<p>Voor $HyperVGen:
+<img alt="Image" src="/Images/ShrinkOS/gen.png"></p>
+<p>Voor $DiskName:</p>
+<p><img alt="Image" src="/Images/ShrinkOS/diskname.png"></p>
+<p>Hierna gaan we een snapshot maken en een nieuwe disk met een kleinere ruimte op basis van de info die we hebben gegeven.
+We geven hierbij de SAS Read access.</p>
+<pre tabindex="0"><code># Get SAS URI for the Managed disk
+$SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskName -Access &#39;Read&#39; -DurationInSecond 600000;
+
+#Provide storage account name where you want to copy the snapshot - the script will create a new one temporarily
+$storageAccountName = &#34;shrink&#34; + [system.guid]::NewGuid().tostring().replace(&#39;-&#39;,&#39;&#39;).substring(1,18)
+
+#Name of the storage container where the downloaded snapshot will be stored
+$storageContainerName = $storageAccountName
+
+#Provide the name of the VHD file to which snapshot will be copied.
+$destinationVHDFileName = &#34;$($VM.StorageProfile.OsDisk.Name).vhd&#34;
+
+#Create the context for the storage account which will be used to copy snapshot to the storage account 
+$StorageAccount = New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName -SkuName Standard_LRS -Location $VM.Location
+$destinationContext = $StorageAccount.Context
+$container = New-AzStorageContainer -Name $storageContainerName -Permission Off -Context $destinationContext
+
+#Copy the snapshot to the storage account and wait for it to complete
+Start-AzStorageBlobCopy -AbsoluteUri $SAS.AccessSAS -DestContainer $storageContainerName -DestBlob $destinationVHDFileName -DestContext $destinationContext
+while(($state = Get-AzStorageBlobCopyState -Context $destinationContext -Blob $destinationVHDFileName -Container $storageContainerName).Status -ne &#34;Success&#34;) { $state; Start-Sleep -Seconds 20 }
+$state
+
+# Revoke SAS token
+Revoke-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskName
+
+# Emtpy disk to get footer from
+$emptydiskforfootername = &#34;$($VM.StorageProfile.OsDisk.Name)-empty.vhd&#34;
+
+$diskConfig = New-AzDiskConfig `
+    -Location $VM.Location `
+    -Zone $VM.Zones `
+    -CreateOption Empty `
+    -DiskSizeGB $DiskSizeGB `
+    -HyperVGeneration $HyperVGen
+
+$dataDisk = New-AzDisk `
+    -ResourceGroupName $resourceGroupName `
+    -DiskName $emptydiskforfootername `
+    -Disk $diskConfig
+
+$VM = Add-AzVMDataDisk `
+    -VM $VM `
+    -Name $emptydiskforfootername `
+    -CreateOption Attach `
+    -ManagedDiskId $dataDisk.Id `
+    -Lun 63
+
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $VM
+
+$VM | Stop-AzVM -Force
+
+
+# Get SAS token for the empty disk
+$SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $emptydiskforfootername -Access &#39;Read&#39; -DurationInSecond 600000;
+
+# Copy the empty disk to blob storage
+Start-AzStorageBlobCopy -AbsoluteUri $SAS.AccessSAS -DestContainer $storageContainerName -DestBlob $emptydiskforfootername -DestContext $destinationContext
+while(($state = Get-AzStorageBlobCopyState -Context $destinationContext -Blob $emptydiskforfootername -Container $storageContainerName).Status -ne &#34;Success&#34;) { $state; Start-Sleep -Seconds 20 }
+$state
+
+# Revoke SAS token
+Revoke-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $emptydiskforfootername
+
+# Remove temp empty disk
+Remove-AzVMDataDisk -VM $VM -DataDiskNames $emptydiskforfootername
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $VM
+
+# Delete temp disk
+Remove-AzDisk -ResourceGroupName $resourceGroupName -DiskName $emptydiskforfootername -Force;
+
+# Get the blobs
+$emptyDiskblob = Get-AzStorageBlob -Context $destinationContext -Container $storageContainerName -Blob $emptydiskforfootername
+$osdisk = Get-AzStorageBlob -Context $destinationContext -Container $storageContainerName -Blob $destinationVHDFileName
+
+$footer = New-Object -TypeName byte[] -ArgumentList 512
+write-output &#34;Get footer of empty disk&#34;
+
+$downloaded = $emptyDiskblob.ICloudBlob.DownloadRangeToByteArray($footer, 0, $emptyDiskblob.Length - 512, 512)
+
+$osDisk.ICloudBlob.Resize($emptyDiskblob.Length)
+$footerStream = New-Object -TypeName System.IO.MemoryStream -ArgumentList (,$footer)
+write-output &#34;Write footer of empty disk to OSDisk&#34;
+$osDisk.ICloudBlob.WritePages($footerStream, $emptyDiskblob.Length - 512)
+
+Write-Output -InputObject &#34;Removing empty disk blobs&#34;
+$emptyDiskblob | Remove-AzStorageBlob -Force
+
+
+#Provide the name of the Managed Disk
+$NewDiskName = &#34;$DiskName&#34; + &#34;-new&#34;
+
+#Create the new disk with the same SKU as the current one
+$accountType = $Disk.Sku.Name
+
+# Get the new disk URI
+$vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
+
+# Specify the disk options
+$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -Zone $VM.Zones -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id -HyperVGeneration $HyperVGen
+
+# Handle Trusted Launch VMs/Disks
+If($Disk.SecurityProfile.SecurityType -eq &#34;TrustedLaunch&#34;){
+    $diskconfig = Set-AzDiskSecurityProfile -Disk $diskconfig -SecurityType &#34;TrustedLaunch&#34;
+}
+</code></pre><p>Om het niet te uitgebreid te aken zal ik niet van alles een export maken. Maar als je het runt zie je wel onderstaande melding lopen tot de copy slag gelukt is.</p>
+<p><img alt="Image" src="/Images/ShrinkOS/Copy.png"></p>
+<p>Als de copy slag helemelaal gelukt is krijg je de volgende melding:</p>
+<p><img alt="Image" src="/Images/ShrinkOS/outcome.png"></p>
+<p>Hierna gaan e een nieuwe disk maken op basis van de info die in het vorige stuk gezet is. (bijvoorbeeld de grote maar ook de Security Type)</p>
+<pre tabindex="0"><code>$NewManagedDisk = New-AzDisk -DiskName $NewDiskName -Disk $diskConfig -ResourceGroupName $resourceGroupName
+</code></pre><p>Deze disk is vrijsnel aangemaakt en je krijgt een id met daarin de nieuwe naam</p>
+<p><img alt="Image" src="/Images/ShrinkOS/newdisk.png"></p>
+<p>Nu stoppen we de bestaande VM.Deze is tijdens het script na een Update weer gestart.</p>
+<pre tabindex="0"><code>$VM | Stop-AzVM -Force
+</code></pre><p><img alt="Image" src="/Images/ShrinkOS/stopvm.png"></p>
+<p>Hierna gaan we de Configuratie aanpassen, de disk koppelen aan de VM en de machine weer starten..</p>
+<pre tabindex="0"><code># Set the VM configuration to point to the new disk  
+Set-AzVMOSDisk -VM $VM -ManagedDiskId $NewManagedDisk.Id -Name $NewManagedDisk.Name
+
+# Update the VM with the new OS disk
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $VM
+
+$VM | Start-AzVM
+</code></pre><p><img alt="Image" src="/Images/ShrinkOS/klaar.png"></p>
+<p>We hebben nu in het script een pauze gebouwd van 3 minuten om te zorgen dat de disk goed gesync word en de machine helemaal gestart is.</p>
+<p>De laatste stap in het script is het verwijderen van de oude disk blob storage en het tijdelijke storage account.</p>
+<pre tabindex="0"><code># Delete old Managed Disk
+Remove-AzDisk -ResourceGroupName $resourceGroupName -DiskName $DiskName -Force;
+
+# Delete old blob storage
+$osdisk | Remove-AzStorageBlob -Force
+
+# Delete temp storage account
+$StorageAccount | Remove-AzStorageAccount -Force
+</code></pre><p>Nu is de machine actief met een nieuwe disk.</p>
+<p><img alt="Image" src="/Images/ShrinkOS/newestdisk.png"></p>
+<p>Zoals beloofd hier nog even het hele script, daarna gaan we verder met de configuratie in de VM.</p>
+<pre tabindex="0"><code># Variables
+$DiskID = &#34;# eg. &#34;/subscriptions/203bdbf0-69bd-1a12-a894-a826cf0a34c8/resourcegroups/rg-server1-prod-1/providers/Microsoft.Compute/disks/Server1-Server1&#34;
+$VMName = &#34;eg. Vmname&#34;
+$DiskSizeGB = 90 (eq. DiskSize)
+$AzSubscription = &#34;eq. Subscription name&#34;
+# Script
+# Login to Azure with your Admin Account:
+Connect-AzAccount
+
+#Provide the subscription Id of the subscription where VM is created
+Select-AzSubscription -Subscription $AzSubscription
+
+# VM to resize disk of
+$VM = Get-AzVm | ? Name -eq $VMName
+
+#Provide the name of your resource group where VM is created
+$resourceGroupName = $VM.ResourceGroupName
+
+# Get Disk from DiskID
+$Disk = Get-AzDisk | ? Id -eq $DiskID
+
+# Get VM/Disk generation from Disk
+$HyperVGen = $Disk.HyperVGeneration
+
+# Get Disk Name from Disk
+$DiskName = $Disk.Name
+
+# Get SAS URI for the Managed disk
+$SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskName -Access &#39;Read&#39; -DurationInSecond 600000;
+
+#Provide storage account name where you want to copy the snapshot - the script will create a new one temporarily
+$storageAccountName = &#34;shrink&#34; + [system.guid]::NewGuid().tostring().replace(&#39;-&#39;,&#39;&#39;).substring(1,18)
+
+#Name of the storage container where the downloaded snapshot will be stored
+$storageContainerName = $storageAccountName
+
+#Provide the name of the VHD file to which snapshot will be copied.
+$destinationVHDFileName = &#34;$($VM.StorageProfile.OsDisk.Name).vhd&#34;
+
+#Create the context for the storage account which will be used to copy snapshot to the storage account 
+$StorageAccount = New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName -SkuName Standard_LRS -Location $VM.Location
+$destinationContext = $StorageAccount.Context
+$container = New-AzStorageContainer -Name $storageContainerName -Permission Off -Context $destinationContext
+
+#Copy the snapshot to the storage account and wait for it to complete
+Start-AzStorageBlobCopy -AbsoluteUri $SAS.AccessSAS -DestContainer $storageContainerName -DestBlob $destinationVHDFileName -DestContext $destinationContext
+while(($state = Get-AzStorageBlobCopyState -Context $destinationContext -Blob $destinationVHDFileName -Container $storageContainerName).Status -ne &#34;Success&#34;) { $state; Start-Sleep -Seconds 20 }
+$state
+
+# Revoke SAS token
+Revoke-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskName
+
+# Emtpy disk to get footer from
+$emptydiskforfootername = &#34;$($VM.StorageProfile.OsDisk.Name)-empty.vhd&#34;
+
+$diskConfig = New-AzDiskConfig `
+    -Location $VM.Location `
+    -Zone $VM.Zones `
+    -CreateOption Empty `
+    -DiskSizeGB $DiskSizeGB `
+    -HyperVGeneration $HyperVGen
+
+$dataDisk = New-AzDisk `
+    -ResourceGroupName $resourceGroupName `
+    -DiskName $emptydiskforfootername `
+    -Disk $diskConfig
+
+$VM = Add-AzVMDataDisk `
+    -VM $VM `
+    -Name $emptydiskforfootername `
+    -CreateOption Attach `
+    -ManagedDiskId $dataDisk.Id `
+    -Lun 63
+
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $VM
+
+$VM | Stop-AzVM -Force
+
+
+# Get SAS token for the empty disk
+$SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $emptydiskforfootername -Access &#39;Read&#39; -DurationInSecond 600000;
+
+# Copy the empty disk to blob storage
+Start-AzStorageBlobCopy -AbsoluteUri $SAS.AccessSAS -DestContainer $storageContainerName -DestBlob $emptydiskforfootername -DestContext $destinationContext
+while(($state = Get-AzStorageBlobCopyState -Context $destinationContext -Blob $emptydiskforfootername -Container $storageContainerName).Status -ne &#34;Success&#34;) { $state; Start-Sleep -Seconds 20 }
+$state
+
+# Revoke SAS token
+Revoke-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $emptydiskforfootername
+
+# Remove temp empty disk
+Remove-AzVMDataDisk -VM $VM -DataDiskNames $emptydiskforfootername
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $VM
+
+# Delete temp disk
+Remove-AzDisk -ResourceGroupName $resourceGroupName -DiskName $emptydiskforfootername -Force;
+
+# Get the blobs
+$emptyDiskblob = Get-AzStorageBlob -Context $destinationContext -Container $storageContainerName -Blob $emptydiskforfootername
+$osdisk = Get-AzStorageBlob -Context $destinationContext -Container $storageContainerName -Blob $destinationVHDFileName
+
+$footer = New-Object -TypeName byte[] -ArgumentList 512
+write-output &#34;Get footer of empty disk&#34;
+
+$downloaded = $emptyDiskblob.ICloudBlob.DownloadRangeToByteArray($footer, 0, $emptyDiskblob.Length - 512, 512)
+
+$osDisk.ICloudBlob.Resize($emptyDiskblob.Length)
+$footerStream = New-Object -TypeName System.IO.MemoryStream -ArgumentList (,$footer)
+write-output &#34;Write footer of empty disk to OSDisk&#34;
+$osDisk.ICloudBlob.WritePages($footerStream, $emptyDiskblob.Length - 512)
+
+Write-Output -InputObject &#34;Removing empty disk blobs&#34;
+$emptyDiskblob | Remove-AzStorageBlob -Force
+
+
+#Provide the name of the Managed Disk
+$NewDiskName = &#34;$DiskName&#34; + &#34;-new&#34;
+
+#Create the new disk with the same SKU as the current one
+$accountType = $Disk.Sku.Name
+
+# Get the new disk URI
+$vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
+
+# Specify the disk options
+$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -Zone $VM.Zones -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id -HyperVGeneration $HyperVGen
+
+# Handle Trusted Launch VMs/Disks
+If($Disk.SecurityProfile.SecurityType -eq &#34;TrustedLaunch&#34;){
+    $diskconfig = Set-AzDiskSecurityProfile -Disk $diskconfig -SecurityType &#34;TrustedLaunch&#34;
+}
+
+#Create Managed disk
+$NewManagedDisk = New-AzDisk -DiskName $NewDiskName -Disk $diskConfig -ResourceGroupName $resourceGroupName
+
+$VM | Stop-AzVM -Force
+
+# Set the VM configuration to point to the new disk  
+Set-AzVMOSDisk -VM $VM -ManagedDiskId $NewManagedDisk.Id -Name $NewManagedDisk.Name
+
+# Update the VM with the new OS disk
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $VM
+
+$VM | Start-AzVM
+
+start-sleep 180
+# Please check the VM is running before proceeding with the below tidy-up steps
+
+# Delete old Managed Disk
+Remove-AzDisk -ResourceGroupName $resourceGroupName -DiskName $DiskName -Force;
+
+# Delete old blob storage
+$osdisk | Remove-AzStorageBlob -Force
+
+# Delete temp storage account
+$StorageAccount | Remove-AzStorageAccount -Force
+</code></pre>
   </article>
 <div class="px-2 mb-2">
   

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ARC on Andy Cliftons Blog</title>
-    <link>/en/tags/arc/</link>
+    <link>//localhost:1313/en/tags/arc/</link>
     <description>Recent content in ARC on Andy Cliftons Blog</description>
     <generator>Hugo 0.125.0</generator>
     <language>en</language>
     <lastBuildDate>Wed, 03 Jan 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/en/tags/arc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="//localhost:1313/en/tags/arc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Configure Azure ARC in een test omgeving</title>
-      <link>/en/blog/configure-azure-arc-in-een-test-omgeving/</link>
+      <link>//localhost:1313/en/blog/configure-azure-arc-in-een-test-omgeving/</link>
       <pubDate>Wed, 03 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>/en/blog/configure-azure-arc-in-een-test-omgeving/</guid>
+      <guid>//localhost:1313/en/blog/configure-azure-arc-in-een-test-omgeving/</guid>
       <description>Configure Azure ARC in een test omgeving ==&amp;gt; Disclaimer work in progress. &amp;lt;== Voorwoord Soms is het handig om even snel een testomgeving op te zetten, zodat je dingen kunt testen. Echter is het niet altijd mogelijk om een hele Hyper-V omgeving op te tuigen. Hoe ga je dat snel doen? Wat heb je daar voor nodig? En kan dit in Azure? Meerdere vragen die ik nog wel eens gesteld krijg.</description>
     </item>
   </channel>

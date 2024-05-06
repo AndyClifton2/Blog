@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Emoji on Andy Cliftons Blog</title>
-    <link>/en/tags/emoji/</link>
+    <link>//localhost:1313/en/tags/emoji/</link>
     <description>Recent content in Emoji on Andy Cliftons Blog</description>
     <generator>Hugo 0.125.0</generator>
     <language>en</language>
     <lastBuildDate>Thu, 02 May 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/en/tags/emoji/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="//localhost:1313/en/tags/emoji/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Verklein OS Disk Size in Azure</title>
-      <link>/en/blog/shrink-os-disk-size-in-azure/</link>
+      <link>//localhost:1313/en/blog/shrink-os-disk-size-in-azure/</link>
       <pubDate>Thu, 02 May 2024 00:00:00 +0000</pubDate>
-      <guid>/en/blog/shrink-os-disk-size-in-azure/</guid>
+      <guid>//localhost:1313/en/blog/shrink-os-disk-size-in-azure/</guid>
       <description>Verkleinen OS Disk Size in Azure ==&amp;gt; Disclaimer work in progress &amp;lt;== Voorwoord Een OS disk die te groot aangemaakt is, het blijft een lastig probleem. Het zijn onnodige kosten binnen azure. en het aanpassen van de Size van een Azure OS disk kan niet zomaar. Je krijgt dan de melding: Toch zijn er mogelijkheden om dit aan te passen en daardoor kosten te besparen. De eis om dit te kunnen doen is uiteraard dat er genoeg schijfruimte aanwezig op de Disk in de VM om dit kunnen doen.</description>
     </item>
     <item>
       <title>Run Powershell Script met Hybrid Worker Groups</title>
-      <link>/en/blog/run-powershell-script-with-hybrid-worker/</link>
+      <link>//localhost:1313/en/blog/run-powershell-script-with-hybrid-worker/</link>
       <pubDate>Sat, 12 Aug 2023 00:00:00 +0000</pubDate>
-      <guid>/en/blog/run-powershell-script-with-hybrid-worker/</guid>
+      <guid>//localhost:1313/en/blog/run-powershell-script-with-hybrid-worker/</guid>
       <description>Run Powershell Script met Hybrid Worker Groups ==&amp;gt; Disclaimer work in progress. &amp;lt;== Voorwoord Als je de on-premises omgeving wilt automatiseren, is Azure Arc Server een geweldige aanbieding voor het onboarden van Azure-beheerservices zoals Azure Monitor, Sentinel, maar ook Defender en IAM. Een van de andere voordelen die we nog hebben is het gebruik van Hybrid Workers. Hierdoor kun je Runbooks, Logic Apps of Power Automate gebruiken om het beheer of deploy van dingen op je on-premise vm mogelijk te maken.</description>
     </item>
     <item>
       <title>Password Protection</title>
-      <link>/en/blog/passwordprotection/</link>
+      <link>//localhost:1313/en/blog/passwordprotection/</link>
       <pubDate>Tue, 18 Apr 2023 00:00:00 +0000</pubDate>
-      <guid>/en/blog/passwordprotection/</guid>
+      <guid>//localhost:1313/en/blog/passwordprotection/</guid>
       <description>Password Protection ==&amp;gt; Disclaimer work in progress &amp;lt;== Voorwoord Complexe wachtwoorden zijn basis requirements om je systeem te beschermen tegen een cyberaanval. Zelfs vandaag de dag kunnen de meeste cyber-attacks voorkomen worden als users een meer complex en vooral niet te raden wachtwoord zouden gebruiken. Cyber-attackers proberen altijd eerst het low hanging fruit. Dus met een password protection policy kun je het ze in ieder geval al een stuk moeilijker maken.</description>
     </item>
   </channel>

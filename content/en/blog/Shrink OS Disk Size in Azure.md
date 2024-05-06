@@ -32,94 +32,57 @@ Log in op de server via RDP.
 
 ![Image](/Images/ShrinkOS/rdp.png)
 
-Open **Authentication methods**
+Als je ingelogd bent ga je naar Disk Management.
 .
 
-![Image](/Images/PasswordProtection/AuthenticationMethods.png)
+![Image](/Images/ShrinkOS/disk.png)
 
-4)	Nu wordt er een nieuwe window geopend om password protection setting te configureren.
+Als diskmanagement geopend is kijk dan bij de C schijf hoeveel vrije ruimte je hebt. Zorg ervoor dat je genoeg over houd voor een groei. (+/- 15/20% over is voldoende)
 
-Vul in: 
-~~~
-Lockout Threshold = hoeveel pogingen voor het account locked (by default op 10)
-Lockout duration in seconds = Tijd dat je niet kunt inloggen (by default op 60 seconden)
+![Image](/Images/ShrinkOS/diskc.png)
 
-In Custom banned password :
-Enforce custom list  = Yes
-Custom banned password list = hier vul je alle wachtwoorden in waarvan je niet wilt dat ze toegevoegd worden, 
-                              denk aan password, welkom, bedrijfsnaam, voornamen, achternamen, postcodes, etc
+Als we kijken in disk management zien we onderstaande disk nummer staan. onthou of bewaar deze, deze hebben we in het vervolg nog nodig.
+
+![Image](/Images/ShrinkOS/disk0.png)
+Open vervolgens powershell en vul de onderstaande regel in om je disk te shrinken.
 
 ~~~
-
-![Image](/Images/PasswordProtection/customsmartlockout.png)
-
-5)	Om de policy ook door te voeren op je on-premise AD omgeving vul je het volgende in:
+Get-Partition -DiskNumber 0  (het disknummer is hetzelfde nummer als dat je hierboven hebt gevonden.)
 
 ~~~
-Enable password protection on Windows Server Active Directory = Yes
-Mode = Enforced of Audit (bij audit zal hij alleen loggings maken)
+
+
+![Image](/Images/ShrinkOS/disknumber.png)
+
+In bovenstaande voorbeeld zien we dat disknummer 4 de disk is die we moeten gebruiken omdat hier de C schijf op staat.
+In ons voorbeeld verkleinen we de disk naar 90Gb. Maar je kunt natuurlijk zelf kiezen wat voor jou het beste past.
+Vul volgende regel in in Powershell: 
+
 ~~~
-![Image](/Images/PasswordProtection/PPAD.png)
+Get-Partition -DiskNumber 0 -PartitionNumber 4 | Resize-Partition -Size 90GB
 
-Druk op **Save** hiermee sla je alle wijzigingen op.
-
-![Image](/Images/PasswordProtection/save.png)
-
-
-## Installeren Azure agents op on-premise servers.
-
-Om de password protection ook toe te passen op je on-premise omgeving moeten we 2 azure componenten installeren.
-
-1. Azure AD password protection proxy service
-2. Azure AD password protection DC agent
-
-De manier van werken van deze agents worden perfect uitgelegd in onderstaande foto.
-![Image](/Images/PasswordProtection/adpp.png)
-
-Voordat we de Azure AD password protection service gaan installeren moeten we het volgende bedenken.
 ~~~
--	Op dit moment mag je 2 proxy servers installeren onder 1 forest.
--	Het wordt ondersteund om het te installeren op een DC maar dan moet deze server wel een internet connectie hebben.
--	Om de service te kunnen registreren moet je Domain Admin rechten hebben.
--	Proxy servers moeten constant een communicatiemogelijkheid hebben tot de DC agent.
--	Je moet een Tenant administrator account hebben om in Azure de proxy’s te kunnen configureren.
+
+
+Soms krijg je onderstaande error:
+
+![Image](/Images/ShrinkOS/error.png)
 ~~~
-Start van de installatie:
+The specified shrink size is too big and will cause the volume to be smaller than the minimum volume size
+~~~
 
+De oplossing is eigenlijk vrij simpel, probeer de powershell regel nog 2/3 keer en dan lukt het wel. dit omdat er gequery word en er soms files in een bepaald block in gebruik zijn.
 
-1. **Log in** op de server als Domain Admin
-2. Ga naar deze [hier](https://www.microsoft.com/download/details.aspx?id=57071)  en download AzureADPasswordProtectionProxy.msi
-![Image](/Images/PasswordProtection/download.png)
+![Image](/Images/ShrinkOS/disknew.png)
 
-3.Dubbelklik op de msi file en start de installatie.
+Zet de machine uit via Shutdown:
 
-  ![Image](/Images/PasswordProtection/msi.png)
+![Image](/Images/ShrinkOS/shutdown.png)
 
-4. Om te kijken of de service draait: open powershell en vul de volgende rules in:
+Als de machine uitstaat moeten we hem ook nog deallocate.
+Ga naar de azure portal en zoek op Virtual Machines.
 
-````
-Import-Module AzureADPasswordProtection
-Get-Service AzureADPasswordProtectionProxy | fl
+![Image](/Images/ShrinkOS/VirtualMachines.png)
 
-````
-![Image](/Images/PasswordProtection/powershell.png)
-
-5. nu moeten we de proxy gaan registreren.Doe dit in powershell met de volgende rule:
-
-````
-$ADadmin = Get-Credential ( Je hebt hiervoor je Global admin account nodig)
-Register-AzureADPasswordProtectionProxy -AzureCredential $ADadmin.
-````
-Volgende stap is het installeren van de Azure AD password protection DC agent te installeren (deze moet op een domain controller geïnstalleerd worden, deze installatie heeft een reboot nodig).
-
-6. **Login** op de server als Domain admin
-7.  Ga naar deze [hier](https://www.microsoft.com/download/details.aspx?id=57071)  en download AzureADPasswordProtectionDCAgent.msi.
-8.Dubbelklik op de msi file en start de installatie.
-![Image](/Images/PasswordProtection/msi2.png)
-9. Na de installatie heb je een reboot nodig
-
-![Image](/Images/PasswordProtection/reboot.png)
-
-Nu is de installatie klaar en kun je testen of de bestaande wachtwoorden geweigerd worden.
-
-
+Zoek op de virtuele machine en klik op Stop.
+![Image](/Images/ShrinkOS/stop.png)

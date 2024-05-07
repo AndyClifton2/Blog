@@ -37,7 +37,7 @@
   <meta itemprop="description" content="Verklein OS Disk Size in Azur">
   <meta itemprop="datePublished" content="2024-05-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2024-05-02T00:00:00+00:00">
-  <meta itemprop="wordCount" content="2151">
+  <meta itemprop="wordCount" content="2265">
   <meta itemprop="keywords" content="Emoji">
 
   
@@ -156,7 +156,7 @@
         <line x1="12" y1="6" x2="12" y2="19" />
         <line x1="21" y1="6" x2="21" y2="19" />
       </svg>
-      2151&nbsp;words
+      2265&nbsp;words
       
         
       
@@ -584,7 +584,17 @@ $osdisk | Remove-AzStorageBlob -Force
 
 # Delete temp storage account
 $StorageAccount | Remove-AzStorageAccount -Force
-</code></pre>
+</code></pre><p>Als je nu naar de VM gaat in Azure en dan naar disks zie je dat de disk grootte ook aangepast is naar de 90Gb die we eerder hebben opgegeven.
+<img alt="Image" src="/Images/ShrinkOS/diskazure.png"></p>
+<p>Log nu in op de server en open DiskManagement. Je zult zien dat er nu nog een heel klein beetje aan Unallocated storage aanwezig is.
+Klik op de C schijf en klik daarna op Extend Volume.
+<img alt="Image" src="/Images/ShrinkOS/ExtendVolume.png"></p>
+<p>Daarna krijg je de Extend Volume Wizard en selecteer de openstaande ruimte. en klik daarna op Next.</p>
+<p><img alt="Image" src="/Images/ShrinkOS/Extend1.png"></p>
+<p>Klik daarna op Finish</p>
+<p><img alt="Image" src="/Images/ShrinkOS/Extend2.png"></p>
+<p>Nu heb je je OS disk succesvol kleiner gemaakt, Als je dit bij meerdere Servers kunt doen heb je een behoorlijke kostenbesparing kunnen uitvoeren voor je werkgever.</p>
+
   </article>
 <div class="px-2 mb-2">
   

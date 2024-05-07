@@ -347,7 +347,6 @@ Nu is de machine actief met een nieuwe disk.
 ![Image](/Images/ShrinkOS/newestdisk.png)
 
 Zoals beloofd hier nog even het hele script, daarna gaan we verder met de configuratie in de VM.
-
 ~~~
 # Variables
 $DiskID = "# eg. "/subscriptions/203bdbf0-69bd-1a12-a894-a826cf0a34c8/resourcegroups/rg-server1-prod-1/providers/Microsoft.Compute/disks/Server1-Server1"
@@ -507,3 +506,21 @@ $osdisk | Remove-AzStorageBlob -Force
 $StorageAccount | Remove-AzStorageAccount -Force
 
 ~~~
+Als je nu naar de VM gaat in Azure en dan naar disks zie je dat de disk grootte ook aangepast is naar de 90Gb die we eerder hebben opgegeven.
+![Image](/Images/ShrinkOS/diskazure.png)
+
+
+Log nu in op de server en open DiskManagement. Je zult zien dat er nu nog een heel klein beetje aan Unallocated storage aanwezig is.
+Klik op de C schijf en klik daarna op Extend Volume.
+![Image](/Images/ShrinkOS/ExtendVolume.png)
+
+Daarna krijg je de Extend Volume Wizard en selecteer de openstaande ruimte. en klik daarna op Next.
+
+![Image](/Images/ShrinkOS/Extend1.png)
+
+Klik daarna op Finish
+
+![Image](/Images/ShrinkOS/Extend2.png)
+
+
+Nu heb je je OS disk succesvol kleiner gemaakt, Als je dit bij meerdere Servers kunt doen heb je een behoorlijke kostenbesparing kunnen uitvoeren voor je werkgever.

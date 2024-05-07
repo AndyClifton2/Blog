@@ -11,7 +11,7 @@ DefaultContentLanguageInSubdir = true
     weight = 1
     languageName = "English"
     [languages.en.params]
-      introTitle = "Hey! Ik ben Andy Clifton2"
+      introTitle = "Hey! Ik ben Andy Clifton"
       introSubtitle = "Ik ben 41 jaar oud en Cloud Engineer bij Detron IT Consultants, Microsoft Certified Trainer en ik schrijf deze blogs. Ook maak ik de podcast Azure Adventurer."
       introPhoto = "/Andy.jpg"
       logo = "/raw.png"

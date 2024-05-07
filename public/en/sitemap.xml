@@ -3,16 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/en/</loc>
-    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/en/blog/</loc>
-    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/en/tags/emoji/</loc>
-    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-07T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/en/blog/deploy-scom-mi/</loc>
+    <lastmod>2024-05-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/en/tags/</loc>
-    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/en/blog/shrink-os-disk-size-in-azure/</loc>
     <lastmod>2024-05-02T00:00:00+00:00</lastmod>

@@ -4,7 +4,7 @@ title: "Installeren en configureren van SCOM Managed Instance"
 description: "Installeren en configureren van SCOM Managed Instance"
 date: 2024-05-07
 tags: ["emoji"]
-thumbnail: "/img/scom.png"
+thumbnail: "/Images/SCOMMI/SCOM.png"
 ---
 
 # Verkleinen OS Disk Size in Azure
